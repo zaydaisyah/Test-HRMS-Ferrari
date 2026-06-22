@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ital Auto HRMS - E-Leave HR Portal</title>
+  <meta name="description" content="Official E-Leave HR Management Portal. Review, approve and manage staff leave applications.">
+  <link rel="stylesheet" href="index.css">
+  <!-- FontAwesome for Premium Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Confetti for premium micro-animations -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- jsPDF + AutoTable for PDF Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <!-- SheetJS for Excel/XLS Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <!-- ========================================== -->
+  <!-- TOAST NOTIFICATION CONTAINER               -->
+  <!-- ========================================== -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- ========================================== -->
+  <!-- MAIN HRMS APPLICATION SHELL                 -->
+  <!-- ========================================== -->
+  <div id="main-app-screen" class="app-container">
+    
+    <!-- Navigation Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <!-- Shield SVG Logo -->
+        <svg class="sidebar-logo" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30,5 C40,5 48,10 48,15 C48,35 30,55 30,55 C30,55 12,35 12,15 C12,10 20,5 30,5 Z" fill="var(--ferrari-yellow)" />
+          <path d="M30,12 L30,48 L40,18 C40,14 35,12 30,12 Z" fill="#1A1A1A" fill-opacity="0.15" />
+          <path d="M30,5 C40,5 48,10 48,15 C48,35 30,55 30,55 C30,55 12,35 12,15 C12,10 20,5 30,5 Z" stroke="#1A1A1A" stroke-width="1.5" fill="none" />
+          <polygon points="30,16 33,23 40,24 35,29 36,36 30,32 24,36 25,29 20,24 27,23" fill="#1A1A1A" />
+        </svg>
+        <div>
+          <h2>Ital Auto HRMS</h2>
+        </div>
+      </div>
+
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebar-user-avatar">EV</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-user-name">Eleanor Vance</div>
+          <div class="user-role-badge" id="sidebar-user-role">HR Director</div>
+          <div class="user-id" id="sidebar-user-id">HR-001</div>
+        </div>
+      </div>
+
+      <!-- Dynamic Sidebar Navigation Menu -->
+      <nav class="sidebar-menu" id="sidebar-nav-menu">
+        <!-- Injected via app.js depending on active system and role -->
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="menu-item" id="sidebar-switch-system-btn">
+          <i class="fa-solid fa-arrows-rotate"></i>
+          <span>Switch System</span>
+        </button>
+        <button class="menu-item logout-item" id="sidebar-logout-btn">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      
+      <!-- Top Header -->
+      <header class="main-header">
+        <div class="header-left">
+          <button class="menu-toggle-btn" id="mobile-menu-toggle"><i class="fa-solid fa-bars"></i></button>
+          <div class="header-search-bar">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" placeholder="Search...">
+          </div>
+        </div>
+        
+        <div class="header-right">
+          <!-- FAQ Button -->
+          <div class="header-icon-btn" id="faq-btn" title="FAQ" onclick="openFaqModal()">
+            <i class="fa-regular fa-circle-question"></i>
+          </div>
+          <!-- Announcements / Bell -->
+          <div class="header-icon-btn notification-btn" id="announcement-btn" title="Announcements" onclick="openAnnouncementsModal()">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notification-badge-dot" id="announcement-badge"></span>
+          </div>
+          
+          <!-- User Profile Box -->
+          <div class="header-profile" id="profile-btn" onclick="openProfileModal()" style="cursor:pointer;">
+            <div class="header-user-avatar" id="header-user-avatar">EV</div>
+            <div class="header-user-info">
+              <div class="header-user-name" id="header-user-name">Eleanor Vance</div>
+              <div class="header-user-role" id="header-user-role">HR Director</div>
+            </div>
+            <i class="fa-solid fa-chevron-down profile-arrow"></i>
+          </div>
+          
+          <button class="system-switch-shortcut" id="header-quick-switch-btn">Switch Console</button>
+        </div>
+      </header>
+
+      <!-- Scrollable Content Body -->
+      <div class="content-body" id="main-content-body">
+
+        <!-- ========================================== -->
+        <!-- E-LEAVE SYSTEM - HR VIEWS                  -->
+        <!-- ========================================== -->
+
+        <!-- HR Dashboard Section -->
+        <section id="sec-leave-hr-dashboard" class="hidden">
+          <div class="metrics-row" id="leave-hr-dashboard-metrics">
+            <!-- Dynamic stats injected here -->
+          </div>
+          
+          <div class="dashboard-grid-2col">
+            <!-- Leave Calendar Block -->
+            <div class="card-block">
+              <div class="card-block-header">
+                <h3><i class="fa-solid fa-calendar-days"></i> Staff Leave Calendar</h3>
+              </div>
+              <div class="calendar-wrapper">
+                <div class="calendar-header">
+                  <button type="button" class="calendar-nav-btn" id="calendar-hr-prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                  <div class="calendar-month-year" id="calendar-hr-month-year">June 2026</div>
+                  <button type="button" class="calendar-nav-btn" id="calendar-hr-next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-grid-weekdays">
+                  <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <div class="calendar-grid-days" id="calendar-hr-days-grid">
+                  <!-- Generated dynamically in app.js -->
+                </div>
+              </div>
+            </div>
+            
+            <!-- Recent Leave Requests Block -->
+            <div class="card-block">
+              <div class="card-block-header">
+                <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Leave Applications</h3>
+              </div>
+              <div class="table-responsive">
+                <table class="custom-table">
+                  <thead>
+                    <tr>
+                      <th>Staff ID</th>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Dates</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="leave-hr-recent-requests-tbody">
+                    <!-- Injected via app.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Approved Leave (HR Reviewer) -->
+        <section id="sec-leave-hr-approve" class="hidden">
+          <div class="card-block approve-leave-card-block" style="width: 100%; max-width: 100%; padding: 0;">
+            <!-- Breadcrumbs Header -->
+            <div class="approve-leave-header-bar">
+              <span>Leave &raquo; HR &raquo; Approve Leave</span>
+            </div>
+            
+            <div style="padding: 1.5rem;">
+              <!-- Filter Bar -->
+              <div class="approve-leave-filters">
+                <div class="form-row-horizontal">
+                  <label for="approve-filter-dept">Department</label>
+                  <div class="form-input-container">
+                    <select id="approve-filter-dept" class="form-select" style="max-width: 250px;">
+                      <option value="- ALL -">- ALL -</option>
+                      <option value="HR and Admin">HR and Admin</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Design">Design</option>
+                      <option value="Operations">Operations</option>
+                    </select>
+                    <span class="info-icon" title="Filter by department"><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </div>
+                <div class="form-row-horizontal">
+                  <label for="approve-filter-employee">Employee</label>
+                  <div class="form-input-container">
+                    <select id="approve-filter-employee" class="form-select" style="max-width: 250px;">
+                      <option value="- ALL -">- ALL -</option>
+                    </select>
+                    <span class="info-icon" title="Filter by employee"><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </div>
+                <div class="form-row-horizontal">
+                  <label for="approve-filter-type">Leave Type:</label>
+                  <div class="form-input-container">
+                    <select id="approve-filter-type" class="form-select" style="max-width: 250px;">
+                      <option value="- ALL -">- ALL -</option>
+                      <option value="ABSENT">ABSENT</option>
+                      <option value="ANNUAL LEAVE">ANNUAL LEAVE</option>
+                      <option value="COMPASSIONATE LEAVE">COMPASSIONATE LEAVE</option>
+                      <option value="EMERGENCY LEAVE">EMERGENCY LEAVE</option>
+                      <option value="EXAMINATION LEAVE">EXAMINATION LEAVE</option>
+                      <option value="HOSPITALISATION">HOSPITALISATION</option>
+                      <option value="LEAVE IN LIEU">LEAVE IN LIEU</option>
+                      <option value="MARRIAGE LEAVE">MARRIAGE LEAVE</option>
+                      <option value="MATERNITY LEAVE">MATERNITY LEAVE</option>
+                      <option value="NO PAY LEAVE DAY">NO PAY LEAVE DAY</option>
+                      <option value="NO PAY LEAVE HOUR">NO PAY LEAVE HOUR</option>
+                      <option value="PATERNITY">PATERNITY</option>
+                      <option value="REPLACEMENT LEAVE">REPLACEMENT LEAVE</option>
+                      <option value="SICK LEAVE">SICK LEAVE</option>
+                    </select>
+                    <span class="info-icon" title="Filter by leave type"><i class="fa-solid fa-circle-info"></i></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Table Wrapper -->
+              <div class="approve-leave-table-container">
+                <table class="approve-leave-table">
+                  <thead>
+                    <tr>
+                      <th style="min-width: 130px; text-align: left;">
+                        <input type="checkbox" id="approve-select-all" style="margin-right: 8px; vertical-align: middle;">
+                        <span>Check Leave</span>
+                      </th>
+                      <th>Status</th>
+                      <th>Emp No</th>
+                      <th>Emp Name</th>
+                      <th>Leave</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Day</th>
+                      <th>AM/PM</th>
+                      <th>Remark</th>
+                      <th>Reference</th>
+                      <th>Submitted By</th>
+                      <th>Submission Date</th>
+                      <th>Last Action By</th>
+                      <th>Rejected Reason</th>
+                      <th>Action Date</th>
+                      <th>Attachment</th>
+                      <th>Approvers</th>
+                    </tr>
+                  </thead>
+                  <tbody id="leave-hr-approve-tbody">
+                    <!-- Injected via app.js -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Table Actions Footer -->
+              <div class="approve-leave-actions-bar">
+                <button type="button" class="approve-action-btn" id="approve-batch-btn">Approve</button>
+                <button type="button" class="approve-action-btn" id="reject-batch-btn">Reject</button>
+                <span class="batch-remark-label">Remark:</span>
+                <input type="text" id="approve-batch-remark" class="form-input" style="max-width: 350px; display: inline-block;" placeholder="Enter remark for checked items...">
+              </div>
+
+              <!-- Pagination Controls -->
+              <div class="approve-leave-pagination-bar">
+                <div class="pagination-left">
+                  <span>Show Page</span>
+                  <select id="approve-pagination-page" class="form-select pagination-select">
+                    <option value="1">1</option>
+                  </select>
+                  <span>of <span id="approve-pagination-total-pages">1</span> Pages</span>
+                </div>
+                <div class="pagination-center">
+                  <span class="pagination-link disabled" id="pagination-first">First</span>
+                  <span class="pagination-link disabled" id="pagination-prev">Prev</span>
+                  <span class="pagination-link disabled" id="pagination-next">Next</span>
+                  <span class="pagination-link disabled" id="pagination-last">Last</span>
+                </div>
+                <div class="pagination-right">
+                  <span>Display</span>
+                  <select id="approve-pagination-limit" class="form-select pagination-select">
+                    <option value="100">100</option>
+                    <option value="50">50</option>
+                    <option value="25">25</option>
+                    <option value="10">10</option>
+                  </select>
+                  <span>Records Per Page</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Apply Leave (HR's Own Form) -->
+        <section id="sec-leave-hr-apply" class="hidden">
+          <div class="card-block" style="max-width: 800px; margin: 0 auto; width: 100%;">
+            <div class="card-block-header">
+              <h3><i class="fa-solid fa-house-laptop"></i> HR Leave Application Form</h3>
+            </div>
+
+            <!-- Leave Balance Stats Bar -->
+            <div class="leave-stats-bar" id="leave-hr-stats-bar">
+              <div class="leave-stats-item"><span class="leave-stats-label">Full:</span><span class="leave-stats-value" id="leave-hr-stat-full">0</span></div>
+              <div class="leave-stats-item"><span class="leave-stats-label">B/F:</span><span class="leave-stats-value" id="leave-hr-stat-bf">0</span></div>
+              <div class="leave-stats-item"><span class="leave-stats-label">Adjust:</span><span class="leave-stats-value" id="leave-hr-stat-adjust">0</span></div>
+              <div class="leave-stats-item"><span class="leave-stats-label">Forfeit:</span><span class="leave-stats-value" id="leave-hr-stat-forfeit">0</span></div>
+              <div class="leave-stats-item"><span class="leave-stats-label">Entitle:</span><span class="leave-stats-value" id="leave-hr-stat-entitle">0</span></div>
+              <div class="leave-stats-item"><span class="leave-stats-label">Total:</span><span class="leave-stats-value" id="leave-hr-stat-total">0</span></div>
+              <div class="leave-stats-item"><span class="leave-stats-label">Taken:</span><span class="leave-stats-value" id="leave-hr-stat-taken">0</span></div>
+              <div class="leave-stats-item"><span class="leave-stats-label">Balance:</span><span class="leave-stats-value highlight" id="leave-hr-stat-balance">0</span></div>
+            </div>
+
+            <form id="leave-hr-apply-form">
+              <div class="form-row-horizontal">
+                <label for="leave-hr-dept">Department</label>
+                <div class="form-input-container">
+                  <select id="leave-hr-dept" class="form-select" required>
+                    <option value="- ALL -">- ALL -</option>
+                    <option value="GENERAL MANAGER">General Manager</option>
+                    <option value="HUMAN RESOURCE & ADMINISTRATION">Human Resource &amp; Administration</option>
+                    <option value="GOVERNMENT LIAISON & LOGISTIC">Government Liaison &amp; Logistic</option>
+                    <option value="FINANCE">Finance</option>
+                    <option value="SALES">Sales</option>
+                    <option value="MARKETING & COMMUNICATIONS">Marketing &amp; Communications</option>
+                    <option value="AFTER SALES">After Sales</option>
+                    <option value="SPECIAL PROJECT">Special Project</option>
+                  </select>
+                  <span class="info-icon" title="Filter by department"><i class="fa-solid fa-circle-info"></i></span>
+                </div>
+              </div>
+
+              <div class="form-row-horizontal">
+                <label for="leave-hr-employee">Employee</label>
+                <div class="form-input-container">
+                  <select id="leave-hr-employee" class="form-select" required>
+                  </select>
+                  <span class="info-icon" title="Select employee"><i class="fa-solid fa-circle-info"></i></span>
+                </div>
+              </div>
+
+              <div class="form-row-horizontal">
+                <label for="leave-hr-type">Leave Type:</label>
+                <div class="form-input-container">
+                  <select id="leave-hr-type" class="form-select" required>
+                    <option value="" disabled>Select Leave Type</option>
+                    <option value="ABSENT">ABSENT</option>
+                    <option value="ANNUAL LEAVE" selected>ANNUAL LEAVE</option>
+                    <option value="COMPASSIONATE LEAVE">COMPASSIONATE LEAVE</option>
+                    <option value="EMERGENCY LEAVE">EMERGENCY LEAVE</option>
+                    <option value="EXAMINATION LEAVE">EXAMINATION LEAVE</option>
+                    <option value="HOSPITALISATION">HOSPITALISATION</option>
+                    <option value="LEAVE IN LIEU">LEAVE IN LIEU</option>
+                    <option value="MARRIAGE LEAVE">MARRIAGE LEAVE</option>
+                    <option value="MATERNITY LEAVE">MATERNITY LEAVE</option>
+                    <option value="NO PAY LEAVE DAY">NO PAY LEAVE DAY</option>
+                    <option value="NO PAY LEAVE HOUR">NO PAY LEAVE HOUR</option>
+                    <option value="PATERNITY">PATERNITY</option>
+                    <option value="REPLACEMENT LEAVE">REPLACEMENT LEAVE</option>
+                    <option value="SICK LEAVE">SICK LEAVE</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row-horizontal">
+                <label>Date:</label>
+                <div class="form-input-container">
+                  <input type="date" id="leave-hr-start-date" class="form-input" style="width: 150px; flex-grow: 0;" required>
+                  <span class="range-to" style="margin: 0 10px;">To</span>
+                  <input type="date" id="leave-hr-end-date" class="form-input" style="width: 150px; flex-grow: 0;" required>
+                </div>
+              </div>
+
+              <div class="form-row-horizontal">
+                <label>No Of Day(s):</label>
+                <div class="form-input-container">
+                  <span id="leave-hr-num-days" style="font-weight: 700;">1</span>
+                </div>
+              </div>
+
+              <div class="form-row-horizontal">
+                <label for="leave-hr-ref-no">Reference No:</label>
+                <div class="form-input-container">
+                  <input type="text" id="leave-hr-ref-no" class="form-input" placeholder="Enter Reference Number (if any)">
+                </div>
+              </div>
+
+              <div class="form-row-horizontal">
+                <label for="leave-hr-reason">Reason:</label>
+                <div class="form-input-container">
+                  <input type="text" id="leave-hr-reason" class="form-input" placeholder="Enter reason for leave" required>
+                </div>
+              </div>
+
+              <div class="form-row-horizontal">
+                <label>Approver(s):</label>
+                <div class="form-input-container">
+                  <span id="leave-hr-approvers" style="font-weight: 600; color: var(--text-secondary);">[Auto Approved]</span>
+                </div>
+              </div>
+
+              <div class="form-row-actions" style="margin-left: 140px; margin-top: 1.5rem;">
+                <button type="submit" class="btn" style="width: auto; min-width: 120px;">Submit</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- My Leaves (HR) -->
+        <section id="sec-leave-hr-my" class="hidden">
+          <div class="card-block">
+            <div class="card-block-header">
+              <h3><i class="fa-solid fa-mug-hot"></i> My Leave History &amp; Status</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Ref ID</th>
+                    <th>Leave Type</th>
+                    <th>Dates (Total Days)</th>
+                    <th>Relief Staff</th>
+                    <th>Status</th>
+                    <th>Remarks / Approver Reason</th>
+                  </tr>
+                </thead>
+                <tbody id="leave-hr-my-tbody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- E-Leave Report Section -->
+        <section id="sec-leave-hr-report" class="hidden">
+          <div class="card-block approve-leave-card-block" style="width: 100%; max-width: 100%; padding: 0;">
+            <div class="approve-leave-header-bar">
+              <span>Leave &raquo; HR &raquo; Leave Report Dashboard</span>
+            </div>
+
+            <div style="padding: 1.5rem;">
+              <div class="approve-leave-filters">
+                <div class="form-row-horizontal">
+                  <label for="report-filter-type">Report Type</label>
+                  <div class="form-input-container">
+                    <select id="report-filter-type" class="form-select" style="max-width: 250px;">
+                      <option value="monthly">Monthly Report</option>
+                      <option value="yearly">Yearly Report</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row-horizontal" id="report-month-row">
+                  <label for="report-filter-month">Select Month</label>
+                  <div class="form-input-container">
+                    <select id="report-filter-month" class="form-select" style="max-width: 250px;">
+                      <option value="0">January</option>
+                      <option value="1">February</option>
+                      <option value="2">March</option>
+                      <option value="3">April</option>
+                      <option value="4">May</option>
+                      <option value="5" selected>June</option>
+                      <option value="6">July</option>
+                      <option value="7">August</option>
+                      <option value="8">September</option>
+                      <option value="9">October</option>
+                      <option value="10">November</option>
+                      <option value="11">December</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row-horizontal">
+                  <label for="report-filter-year">Select Year</label>
+                  <div class="form-input-container">
+                    <select id="report-filter-year" class="form-select" style="max-width: 250px;">
+                      <option value="2025">2025</option>
+                      <option value="2026" selected>2026</option>
+                      <option value="2027">2027</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row-horizontal">
+                  <label for="report-filter-dept">Department</label>
+                  <div class="form-input-container">
+                    <select id="report-filter-dept" class="form-select" style="max-width: 250px;">
+                      <option value="- ALL -">- ALL -</option>
+                      <option value="HR and Admin">HR and Admin</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Design">Design</option>
+                      <option value="Operations">Operations</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row-horizontal">
+                  <label for="report-filter-employee">Employee</label>
+                  <div class="form-input-container">
+                    <select id="report-filter-employee" class="form-select" style="max-width: 250px;">
+                      <option value="- ALL -">- ALL -</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row-horizontal">
+                  <label for="report-filter-leave-type">Leave Type</label>
+                  <div class="form-input-container">
+                    <select id="report-filter-leave-type" class="form-select" style="max-width: 250px;">
+                      <option value="- ALL -">- ALL -</option>
+                      <option value="ABSENT">ABSENT</option>
+                      <option value="ANNUAL LEAVE">ANNUAL LEAVE</option>
+                      <option value="COMPASSIONATE LEAVE">COMPASSIONATE LEAVE</option>
+                      <option value="EMERGENCY LEAVE">EMERGENCY LEAVE</option>
+                      <option value="EXAMINATION LEAVE">EXAMINATION LEAVE</option>
+                      <option value="HOSPITALISATION">HOSPITALISATION</option>
+                      <option value="LEAVE IN LIEU">LEAVE IN LIEU</option>
+                      <option value="MARRIAGE LEAVE">MARRIAGE LEAVE</option>
+                      <option value="MATERNITY LEAVE">MATERNITY LEAVE</option>
+                      <option value="NO PAY LEAVE DAY">NO PAY LEAVE DAY</option>
+                      <option value="NO PAY LEAVE HOUR">NO PAY LEAVE HOUR</option>
+                      <option value="PATERNITY">PATERNITY</option>
+                      <option value="REPLACEMENT LEAVE">REPLACEMENT LEAVE</option>
+                      <option value="SICK LEAVE">SICK LEAVE</option>
+                    </select>
+                  </div>
+                </div>
+
+
+              </div>
+
+              <!-- Report Results Container -->
+              <div id="report-results-container" class="report-results-section hidden">
+                <div class="report-print-header hidden">
+                  <h2>Ital Auto HRMS - Leave Report</h2>
+                  <p id="report-print-subtitle">Monthly Report - June 2026</p>
+                  <hr style="margin: 10px 0; border: none; border-top: 1.5px solid #000;">
+                </div>
+
+                <div class="report-kpi-row">
+                  <div class="report-kpi-card">
+                    <div class="kpi-title">Total Days Taken</div>
+                    <div class="kpi-value" id="report-kpi-days">0</div>
+                  </div>
+                  <div class="report-kpi-card">
+                    <div class="kpi-title">Approved Leaves</div>
+                    <div class="kpi-value" id="report-kpi-approved">0</div>
+                  </div>
+                  <div class="report-kpi-card">
+                    <div class="kpi-title">Pending Leaves</div>
+                    <div class="kpi-value" id="report-kpi-pending">0</div>
+                  </div>
+                  <div class="report-kpi-card">
+                    <div class="kpi-title">Top Leave Type</div>
+                    <div class="kpi-value" id="report-kpi-top-type" style="font-size: 1.1rem; line-height: 2;">-</div>
+                  </div>
+                </div>
+
+                <div class="report-distribution-block" id="report-distribution-block">
+                  <h3><i class="fa-solid fa-chart-bar"></i> Leave Type Distribution (Days Taken)</h3>
+                  <div class="report-distribution-bars" id="report-distribution-bars">
+                  </div>
+                </div>
+
+                <div class="report-table-block">
+                  <h3><i class="fa-solid fa-list-ul"></i> Leave Application Details</h3>
+                  <div class="approve-leave-table-container" style="overflow-x: auto; margin-top: 10px;">
+                    <table class="approve-leave-table report-detail-table">
+                      <thead>
+                        <tr>
+                          <th>Ref ID</th>
+                          <th>Emp No</th>
+                          <th>Employee Name</th>
+                          <th>Leave Type</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Total Days</th>
+                          <th>Status</th>
+                          <th>Reference No</th>
+                          <th>Reason / Remark</th>
+                        </tr>
+                      </thead>
+                      <tbody id="report-details-tbody">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="report-actions-toolbar">
+                  <button type="button" class="approve-action-btn report-export-btn" id="export-report-pdf-btn"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
+                  <button type="button" class="approve-action-btn report-export-btn report-export-btn--excel" id="export-report-xls-btn"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+                  <button type="button" class="approve-action-btn report-export-btn report-export-btn--csv" id="export-report-csv-btn"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+                  <button type="button" class="approve-action-btn" id="print-report-btn"><i class="fa-solid fa-print"></i> Print Report</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: APPROVAL REMARKS                    -->
+  <!-- ========================================== -->
+  <div id="approval-modal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="modal-approval-title">Review Request</h3>
+        <button type="button" class="modal-close-btn" id="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modal-request-id">
+        <input type="hidden" id="modal-request-type">
+        <input type="hidden" id="modal-action-type">
+        
+        <p id="modal-request-summary" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.4; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+        </p>
+        
+        <div class="form-field">
+          <label for="modal-remarks-input" id="modal-remarks-label">Approver Remarks / Reason for Rejection</label>
+          <textarea id="modal-remarks-input" class="form-textarea" placeholder="Provide remarks or feedback..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
+        <button type="button" class="btn" id="modal-confirm-btn">Confirm Decision</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leave Application View Modal -->
+  <div id="leave-view-modal" class="modal-overlay">
+    <div class="modal-container" style="max-width: 780px; width: 95%; height: 90vh; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-lines" style="margin-right:8px;"></i>Leave Application Document</h3>
+        <button type="button" class="modal-close-btn" onclick="closeLeaveViewModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="flex-grow: 1; overflow-y: auto; padding: 2rem; background-color: #f1f5f9;">
+        <div class="official-warrant-paper" id="official-leave-paper-content"></div>
+      </div>
+      <div class="modal-footer" style="padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 12px; background-color: #f8f9fc;">
+        <button type="button" class="btn btn-secondary" onclick="closeLeaveViewModal()">Close</button>
+        <button type="button" class="btn" id="leave-pdf-download-btn">
+          <i class="fa-solid fa-file-pdf"></i> Download PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript File -->
+  <script src="app.js"></script>
+</body>
+</html>
