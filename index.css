@@ -1,0 +1,2543 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
+/* Reset and Variables */
+:root {
+  /* Ferrari Red & Modena Yellow Corporate Theme */
+  --ferrari-red-brand: #E00000;      /* Vibrant Scuderia Red */
+  --ferrari-red-dark: #A80000;       /* Deep crimson red for primary buttons and active sidebar elements */
+  --ferrari-red-light: #FF3333;      /* Lighter red for hover states */
+  --accent-yellow: #F4CA16;          /* Modena Yellow highlight */
+  --accent-yellow-hover: #E0BA0D;
+  
+  /* Backgrounds */
+  --bg-dark: #F0F2F5;                /* Cool light grey/blue page background */
+  --bg-card: #FFFFFF;                /* Pure white card backgrounds */
+  --bg-card-rgb: 255, 255, 255;
+  --bg-input: #FFFFFF;
+  
+  /* Borders & Shadows */
+  --border-color: #EBEBEB;           /* Clean neutral border */
+  --border-glow: rgba(224, 0, 0, 0.08);
+  
+  /* Typography */
+  --text-primary: #1A1A1A;           /* Carbon charcoal dark text */
+  --text-secondary: #5E5E5E;         /* Muted grey corporate text */
+  --text-muted: #9E9E9E;             /* Light gray muted text */
+  
+  /* Feedback Colors */
+  --success: #2E7D32;                /* Forest green */
+  --success-rgb: 46, 125, 50;
+  --warning: #EF6C00;                /* Amber warning */
+  --warning-rgb: 239, 108, 0;
+  --danger: #C62828;                 /* Crimson danger */
+  --danger-rgb: 198, 40, 40;
+  
+  /* Preserve original variable mappings to avoid code breakage */
+  --ferrari-red: var(--ferrari-red-brand);
+  --ferrari-red-rgb: 224, 0, 0;
+  --ferrari-yellow: var(--accent-yellow);
+  --ferrari-yellow-rgb: 244, 202, 22;
+  
+  --sidebar-width: 280px;
+  --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.01);
+  --transition-speed: 0.3s;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ferrari-red);
+}
+
+/* Typography Helpers */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+/* Page Transitions and Hidden Classes */
+.hidden {
+  display: none !important;
+}
+
+/* ------------------------------------------ */
+/* LOGIN SCREEN                               */
+/* ------------------------------------------ */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  background: radial-gradient(circle at top right, rgba(224, 0, 0, 0.06) 0%, rgba(244, 202, 22, 0.03) 50%, #FAFAFA 100%);
+  position: relative;
+}
+
+.login-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(rgba(224, 0, 0, 0.03) 1.5px, transparent 1.5px),
+    radial-gradient(rgba(224, 0, 0, 0.03) 1.5px, transparent 1.5px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  z-index: 1;
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  padding: 3.5rem 2.5rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 20px 40px -10px rgba(224, 0, 0, 0.05), 0 1px 3px rgba(0,0,0,0.02);
+  z-index: 10;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-speed);
+}
+
+.login-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--ferrari-red), var(--ferrari-yellow));
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.ferrari-logo {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+}
+
+.logo-section h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.25rem;
+  background: linear-gradient(135deg, #1e293b 30%, var(--ferrari-red));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo-section p {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  background-color: var(--bg-card);
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all var(--transition-speed) ease;
+}
+
+.input-with-icon input:focus {
+  outline: none;
+  border-color: var(--ferrari-red);
+  box-shadow: 0 0 0 3px rgba(224, 0, 0, 0.12);
+}
+
+.input-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px 24px;
+  background: var(--ferrari-red);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  background: var(--ferrari-red-dark);
+  box-shadow: 0 10px 20px -5px rgba(224, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.demo-logins {
+  margin-top: 2rem;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1.5rem;
+}
+
+.demo-logins p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.demo-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.demo-btn {
+  background-color: #f8f9fc;
+  border: 1px solid #e2e8f0;
+  color: var(--text-primary);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: left;
+  transition: all var(--transition-speed) ease;
+}
+
+.demo-btn:hover {
+  background-color: rgba(224, 0, 0, 0.03);
+  border-color: rgba(224, 0, 0, 0.15);
+}
+
+.demo-btn .role {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--ferrari-red);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ------------------------------------------ */
+/* SYSTEM SELECTOR                            */
+/* ------------------------------------------ */
+.system-selector-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: transparent;
+}
+
+.welcome-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInDown 0.6s ease;
+}
+
+.welcome-header h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-header h2 span {
+  color: var(--ferrari-red);
+}
+
+.welcome-header p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.systems-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  width: 100%;
+  max-width: 850px;
+}
+
+@media(min-width: 600px) {
+  .systems-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.system-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--card-shadow);
+}
+
+.system-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(30,41,59,0.95) 95%);
+  z-index: 2;
+}
+
+.system-card-image {
+  height: 200px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.system-card-content {
+  padding: 2rem;
+  position: relative;
+  z-index: 5;
+  margin-top: -60px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.system-card-icon {
+  background: var(--ferrari-red);
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 8px 16px rgba(92, 89, 242, 0.2);
+  transition: all 0.3s ease;
+}
+
+.system-card h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.system-card p {
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+}
+
+.system-card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  color: var(--ferrari-yellow);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.system-card-footer span {
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+/* Card Hovers */
+.system-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(224, 0, 0, 0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06), 0 0 25px rgba(224, 0, 0, 0.05);
+}
+
+.system-card:hover .system-card-image {
+  transform: scale(1.06);
+}
+
+.system-card:hover .system-card-icon {
+  background: var(--ferrari-yellow);
+  color: #1A1A1A;
+  box-shadow: 0 8px 16px rgba(244, 202, 22, 0.25);
+}
+
+.system-card:hover .system-card-footer span {
+  transform: translateX(5px);
+}
+
+.logout-btn-container {
+  margin-top: 3rem;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  color: var(--text-secondary);
+  width: auto;
+  padding: 10px 20px;
+  font-size: 0.85rem;
+  border-radius: 8px;
+}
+
+.btn-secondary:hover {
+  background: #f1f5f9;
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+  box-shadow: none;
+}
+
+/* ------------------------------------------ */
+/* MAIN LAYOUT (WITH SIDEBAR)                 */
+/* ------------------------------------------ */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100%;
+  background: #ffffff;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  z-index: 100;
+  transition: transform var(--transition-speed) ease;
+}
+
+.sidebar-brand {
+  background-color: var(--ferrari-red-brand);
+  color: #ffffff;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 70px;
+}
+
+.sidebar-brand h2 {
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.sidebar-logo {
+  width: 36px;
+  height: 36px;
+}
+
+.sidebar-brand h2 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+}
+
+.sidebar-brand p {
+  font-size: 0.65rem;
+  color: var(--ferrari-red);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-user {
+  display: none !important;
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--ferrari-red);
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--ferrari-red);
+}
+
+.user-info {
+  overflow: hidden;
+}
+
+.user-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--ferrari-red);
+  margin-top: 1px;
+}
+
+.user-id {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.sidebar-menu {
+  flex-grow: 1;
+  padding: 1.25rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.menu-item i {
+  font-size: 1.05rem;
+  width: 20px;
+  text-align: center;
+  color: var(--text-muted);
+  transition: color var(--transition-speed) ease;
+}
+
+.menu-item:hover {
+  background: #f3f4f6;
+  color: var(--text-primary);
+}
+
+.menu-item:hover i {
+  color: var(--text-primary);
+}
+
+.menu-item.active {
+  background: var(--ferrari-red-brand);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(224, 0, 0, 0.18);
+}
+
+.menu-item.active i {
+  color: #ffffff;
+}
+
+.sidebar-footer {
+  padding: 1rem 0.75rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-footer .menu-item {
+  font-size: 0.85rem;
+  padding: 8px 12px;
+}
+
+.sidebar-footer .menu-item.logout-item:hover {
+  background: rgba(255, 59, 48, 0.05);
+  color: var(--danger);
+}
+
+.sidebar-footer .menu-item.logout-item:hover i {
+  color: var(--danger);
+}
+
+/* Main Content Wrapper */
+.main-wrapper {
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+}
+
+/* Main Header */
+.main-header {
+  height: 70px;
+  border-bottom: 1px solid var(--border-color);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #f3f4f6;
+  border-radius: 50px;
+  padding: 6px 16px;
+  width: 280px;
+}
+
+.header-search-bar input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.85rem;
+  padding-left: 8px;
+  color: var(--text-primary);
+  width: 100%;
+}
+
+.header-search-bar .search-icon {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-icon-btn {
+  font-size: 1.15rem;
+  color: #5E5E5E;
+  cursor: pointer;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.header-icon-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.notification-btn {
+  position: relative;
+}
+
+.notification-badge-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  background-color: var(--ferrari-red-brand);
+  border-radius: 50%;
+}
+
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.header-profile:hover {
+  background-color: #f3f4f6;
+}
+
+.header-user-avatar {
+  width: 36px;
+  height: 36px;
+  background-color: var(--ferrari-red-brand);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-color);
+}
+
+.header-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-user-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.header-user-role {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+
+.profile-arrow {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.header-title-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-toggle-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.header-title-container h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.header-system-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background-color: rgba(224, 0, 0, 0.06);
+  color: var(--ferrari-red);
+  padding: 4px 10px;
+  border-radius: 50px;
+  border: 1px solid rgba(224, 0, 0, 0.15);
+  text-transform: uppercase;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.current-date {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.system-switch-shortcut {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ferrari-red);
+  background: rgba(224, 0, 0, 0.05);
+  border: 1px solid rgba(224, 0, 0, 0.15);
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.system-switch-shortcut:hover {
+  background: var(--ferrari-red);
+  color: #fff;
+}
+
+/* Content Body */
+.content-body {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ------------------------------------------ */
+/* DASHBOARD WIDGETS                          */
+/* ------------------------------------------ */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+#travel-hr-dashboard-metrics {
+  grid-template-columns: 1fr 1fr 1.8fr;
+}
+
+@media (max-width: 1024px) {
+  .metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  #travel-hr-dashboard-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .metrics-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-speed) ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(224, 0, 0, 0.15);
+}
+
+.metric-info-side {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.metric-icon-box.pink-container {
+  background-color: rgba(224, 0, 0, 0.05);
+  color: var(--ferrari-red-brand);
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+/* Today's Attendance Card Specifics */
+.attendance-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.attendance-percentage {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.attendance-subtitle {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+}
+
+.attendance-gold-shape {
+  position: relative;
+}
+
+.metric-icon-box.gold-circle {
+  background-color: var(--accent-yellow);
+  color: #1A1A1A;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 12px rgba(244, 202, 22, 0.25);
+}
+
+/* Travel Requests Large Card (With 3 sub-cards) */
+.travel-requests-large-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 1.25rem 1.5rem;
+}
+
+.large-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.large-card-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.large-card-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background-color: rgba(244, 202, 22, 0.15);
+  color: #A88100;
+  padding: 3px 8px;
+  border-radius: 50px;
+}
+
+.sub-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+.sub-card {
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sub-card-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.sub-card-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.pending-sub-card {
+  background-color: #F1F3F5;
+  color: #495057;
+}
+
+.pending-sub-card .sub-card-label { color: #6C757D; }
+
+.approved-sub-card {
+  background-color: #FFFDF0;
+  color: #856404;
+}
+
+.approved-sub-card .sub-card-label { color: #8F721A; }
+
+.rejected-sub-card {
+  background-color: #FFF0F1;
+  color: #721C24;
+}
+
+.rejected-sub-card .sub-card-label { color: #A83A42; }
+
+/* Redesign to match the clean first card highlight look */
+.metric-card.primary {
+  background: var(--ferrari-red);
+  color: #ffffff;
+  border-color: var(--ferrari-red);
+}
+
+.metric-card.primary .metric-value {
+  color: #ffffff;
+}
+
+.metric-card.primary .metric-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.metric-card.primary .metric-icon-box {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.metric-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  transition: all var(--transition-speed) ease;
+}
+
+.metric-card.warning .metric-icon-box { color: var(--warning); background: rgba(240, 144, 83, 0.08); }
+.metric-card.success .metric-icon-box { color: var(--success); background: rgba(46, 206, 137, 0.08); }
+.metric-card.info .metric-icon-box { color: var(--ferrari-yellow); background: rgba(56, 189, 248, 0.08); }
+
+.metric-details {
+  flex-grow: 1;
+}
+
+.metric-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin-bottom: 2px;
+  color: var(--text-primary);
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ------------------------------------------ */
+/* LEAVE BALANCE CARDS (STAFF VIEW)           */
+/* ------------------------------------------ */
+.balances-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.balance-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.balance-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--border-color);
+}
+
+.balance-card.annual::before { background-color: var(--ferrari-red); }
+.balance-card.sick::before { background-color: var(--ferrari-yellow); }
+.balance-card.emergency::before { background-color: var(--warning); }
+
+.balance-card-info h4 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.balance-card-info p {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.balance-card-info .days-count {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.balance-card-info .days-total {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.progress-ring-container {
+  position: relative;
+  width: 76px;
+  height: 76px;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.35s;
+  transform: rotate(0);
+  transform-origin: 50% 50%;
+  stroke-linecap: round;
+}
+
+.progress-ring-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ------------------------------------------ */
+/* GRID LAYOUTS FOR CONTENT                   */
+/* ------------------------------------------ */
+.dashboard-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media(min-width: 1024px) {
+  .dashboard-grid-2col {
+    grid-template-columns: 1.6fr 1.2fr;
+  }
+}
+
+/* Card Block */
+.card-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-block-header h3 {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-block-header h3 i {
+  color: var(--ferrari-red);
+}
+
+/* ------------------------------------------ */
+/* TABLES                                     */
+/* ------------------------------------------ */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+.custom-table th {
+  padding: 10px 12px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e2e8f0;
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.custom-table td {
+  padding: 12px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.custom-table tr:hover td {
+  background-color: #f8f9fc;
+}
+
+/* Status Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge.pending {
+  background-color: rgba(240, 144, 83, 0.1);
+  color: var(--warning);
+  border: 1px solid rgba(240, 144, 83, 0.15);
+}
+
+.badge.approved {
+  background-color: rgba(46, 206, 137, 0.1);
+  color: var(--success);
+  border: 1px solid rgba(46, 206, 137, 0.15);
+}
+
+.badge.rejected {
+  background-color: rgba(255, 59, 48, 0.08);
+  color: var(--danger);
+  border: 1px solid rgba(255, 59, 48, 0.12);
+}
+
+/* Action Buttons in Table */
+.btn-action-group {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  font-weight: 700;
+  width: auto;
+}
+
+.btn-success {
+  background-color: var(--success);
+}
+.btn-success:hover {
+  background-color: #24b275;
+  box-shadow: 0 4px 10px rgba(46, 206, 137, 0.2);
+}
+
+.btn-danger {
+  background-color: var(--danger);
+}
+.btn-danger:hover {
+  background-color: #e62e25;
+  box-shadow: 0 4px 10px rgba(255, 59, 48, 0.2);
+}
+
+/* ------------------------------------------ */
+/* FORMS                                      */
+/* ------------------------------------------ */
+.form-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media(min-width: 768px) {
+  .form-grid-2col {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field label {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all var(--transition-speed) ease;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--ferrari-red);
+  box-shadow: 0 0 0 3px rgba(224, 0, 0, 0.12);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 1.5rem;
+}
+
+/* ------------------------------------------ */
+/* CALENDAR COMPONENT                         */
+/* ------------------------------------------ */
+.calendar-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.calendar-month-year {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.calendar-nav-btn {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  color: var(--text-primary);
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-speed) ease;
+}
+
+.calendar-nav-btn:hover {
+  background: #f1f5f9;
+  border-color: var(--text-secondary);
+}
+
+.calendar-grid-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.calendar-grid-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1.15;
+  border: 1px solid #f1f5f9;
+  background: #f8f9fc;
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.calendar-day.empty {
+  visibility: hidden;
+}
+
+.calendar-day.today {
+  border-color: rgba(224, 0, 0, 0.3);
+  background: rgba(224, 0, 0, 0.03);
+}
+
+.calendar-day-number {
+  color: var(--text-secondary);
+}
+
+.calendar-day.today .calendar-day-number {
+  color: var(--ferrari-red);
+  font-weight: 800;
+}
+
+.calendar-day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+  overflow-y: auto;
+  max-height: 42px;
+}
+
+.calendar-event-dot {
+  font-size: 0.6rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.calendar-event-dot.annual { background: var(--ferrari-red); }
+.calendar-event-dot.sick { background: var(--ferrari-yellow); color: #000; }
+.calendar-event-dot.emergency { background: var(--warning); }
+.calendar-event-dot.travel { background: #007aff; }
+
+/* ------------------------------------------ */
+/* CHARTS (LIGHT MODE DONUT)                  */
+/* ------------------------------------------ */
+.chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  position: relative;
+}
+
+.chart-legend {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+/* ------------------------------------------ */
+/* MODALS                                     */
+/* ------------------------------------------ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-speed) ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-20px);
+  transition: transform var(--transition-speed) ease;
+  overflow: hidden;
+}
+
+.modal-overlay.active .modal-container {
+  transform: translateY(0);
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-header h3 {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color var(--transition-speed) ease;
+}
+
+.modal-close-btn:hover {
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background-color: #f8f9fc;
+}
+
+/* ------------------------------------------ */
+/* NOTIFICATIONS                              */
+/* ------------------------------------------ */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2000;
+}
+
+.toast {
+  background: #ffffff;
+  border-left: 4px solid var(--border-color);
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  border-right: 1px solid #f1f5f9;
+  color: var(--text-primary);
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  transform: translateY(50px);
+  opacity: 0;
+  animation: slideInUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.toast.success { border-left-color: var(--success); }
+.toast.error { border-left-color: var(--danger); }
+.toast.info { border-left-color: var(--ferrari-yellow); }
+
+.toast-icon {
+  font-size: 1.1rem;
+}
+.toast.success .toast-icon { color: var(--success); }
+.toast.error .toast-icon { color: var(--danger); }
+.toast.info .toast-icon { color: var(--ferrari-yellow); }
+
+/* ------------------------------------------ */
+/* ANIMATIONS                                 */
+/* ------------------------------------------ */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------ */
+/* RESPONSIVE LAYOUT                          */
+/* ------------------------------------------ */
+@media(max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  
+  .menu-toggle-btn {
+    display: block;
+  }
+}
+
+/* ------------------------------------------ */
+/* OFFICIAL TRAVEL WARRANT PAPER STYLES       */
+/* ------------------------------------------ */
+.official-warrant-paper {
+  background-color: #ffffff;
+  color: #000000;
+  font-family: Arial, sans-serif;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  border: 1px solid #000000;
+  border-radius: 8px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.official-warrant-paper * {
+  box-sizing: border-box;
+}
+
+.official-warrant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 10px;
+}
+
+.official-warrant-brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.official-warrant-logo-svg {
+  width: 50px;
+  height: 50px;
+}
+
+.official-warrant-title-text {
+  text-align: left;
+}
+
+.official-warrant-title-text h1 {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #000000;
+  margin: 0;
+  letter-spacing: normal;
+}
+
+.official-warrant-title-text h2 {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #000000;
+  margin: 2px 0 0 0;
+  letter-spacing: normal;
+}
+
+.official-warrant-section-title {
+  background-color: #f1f5f9;
+  border: 1px solid #000000;
+  padding: 4px 8px;
+  font-weight: 800;
+  font-size: 10px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  color: #000000;
+  letter-spacing: normal;
+}
+
+.official-warrant-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0px;
+}
+
+.official-warrant-table td, .official-warrant-table th {
+  border: 1px solid #000000;
+  padding: 5px 8px;
+  vertical-align: middle;
+  color: #000000;
+}
+
+.official-warrant-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 4px;
+}
+
+.official-warrant-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+}
+
+.official-warrant-checkbox-box {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #000000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  background: #fff;
+}
+
+/* Cost table specific styles */
+.official-cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0px;
+}
+
+.official-cost-table td {
+  border: 1px solid #000000;
+  padding: 5px 8px;
+  color: #000000;
+}
+
+.official-cost-table .cost-label-col {
+  width: 40%;
+  font-weight: bold;
+}
+
+.official-cost-table .cost-calc-col {
+  width: 40%;
+}
+
+.official-cost-table .cost-value-col {
+  width: 20%;
+  text-align: right;
+  font-weight: bold;
+}
+
+.official-warrant-signatures {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border: 1px solid #000000;
+  border-top: none;
+  padding: 10px;
+  gap: 15px;
+  min-height: 100px;
+}
+
+.official-signature-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 85px;
+}
+
+.official-signature-title {
+  font-weight: bold;
+  font-size: 9px;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.official-signature-field {
+  border-bottom: 1.5px dashed #000000;
+  height: 40px;
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.signature-stamp {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  font-family: 'Brush Script MT', 'Dancing Script', cursive, sans-serif;
+  font-size: 16px;
+  color: #d1121b;
+  transform: rotate(-8deg);
+  font-weight: bold;
+  pointer-events: none;
+  border: 2px solid #d1121b;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.official-signature-details {
+  font-size: 8px;
+  color: #333333;
+}
+
+.official-hr-use-section {
+  border: 1px solid #000000;
+  margin-top: 12px;
+}
+
+.official-hr-use-header {
+  background-color: #f1f5f9;
+  border-bottom: 1px solid #000000;
+  padding: 4px 8px;
+  font-weight: 800;
+  color: #000000;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.official-hr-use-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 10px;
+  gap: 15px;
+  min-height: 90px;
+}
+
+/* Custom form grid styles */
+.form-grid-3col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cost-table-form {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.cost-row {
+  display: grid;
+  grid-template-columns: 2.5fr 2fr 1.2fr;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-color);
+  align-items: center;
+}
+
+.cost-row.header-row {
+  background-color: #f8f9fc;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.cost-row.total-row {
+  border-bottom: none;
+  background-color: rgba(92, 89, 242, 0.03);
+}
+
+.factor-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inline-input {
+  max-width: 100px;
+  padding: 6px 10px !important;
+}
+
+.inline-total {
+  text-align: right;
+  font-weight: 700;
+  padding: 6px 10px !important;
+}
+
+.checkbox-group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.checkbox-item input {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+.muted-text {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.form-section-title {
+  font-size: 0.95rem;
+  margin: 1.5rem 0 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  color: var(--ferrari-red);
+}
+
+/* Print utilities */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #official-warrant-paper-content, #official-warrant-paper-content * {
+    visibility: visible;
+  }
+  #official-warrant-paper-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+}
+
+/* E-Leave Form Redesign Styles */
+.leave-stats-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-bottom: 20px;
+  font-size: 0.82rem;
+  color: #0f172a;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.leave-stats-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px;
+}
+
+.leave-stats-label {
+  font-weight: 700;
+  color: #475569;
+}
+
+.leave-stats-value {
+  font-weight: 800;
+  background-color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  min-width: 24px;
+  text-align: center;
+  color: #0f172a;
+}
+
+.leave-stats-value.highlight {
+  border-color: var(--success);
+  color: var(--success);
+  background-color: rgba(46, 206, 137, 0.05);
+}
+
+.form-row-horizontal {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.9rem;
+  gap: 15px;
+  width: 100%;
+}
+
+.form-row-horizontal label {
+  width: 140px;
+  flex-shrink: 0;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+.form-row-horizontal .form-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.form-row-horizontal .form-select,
+.form-row-horizontal .form-input {
+  max-width: 400px;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.form-row-horizontal .info-icon {
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color var(--transition-speed);
+  display: inline-flex;
+  align-items: center;
+}
+
+.form-row-horizontal .info-icon:hover {
+  color: var(--ferrari-red);
+}
+
+.form-row-horizontal .range-to {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* E-Leave Approve Grid Redesign */
+.approve-leave-card-block {
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  background-color: #ffffff;
+}
+
+.approve-leave-header-bar {
+  background: linear-gradient(180deg, var(--ferrari-red-light) 0%, var(--ferrari-red-dark) 100%);
+  padding: 10px 18px;
+  border-bottom: 2px solid var(--ferrari-red-dark);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.approve-leave-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  background-color: #f8fafc;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.approve-leave-table-container {
+  overflow-x: auto;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.approve-leave-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  background-color: #ffffff;
+}
+
+.approve-leave-table th, 
+.approve-leave-table td {
+  border: 1px solid #cbd5e1;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.approve-leave-table th {
+  background-color: #f5f5f5;
+  color: #0f172a;
+  font-weight: 700;
+  text-transform: capitalize;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.approve-leave-table td {
+  color: #334155;
+  white-space: nowrap;
+}
+
+.approve-leave-table tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.approve-leave-table tbody tr:hover {
+  background-color: rgba(224, 0, 0, 0.03);
+}
+
+.approve-leave-table td a.view-link {
+  color: var(--ferrari-red);
+  text-decoration: underline;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.approve-leave-table td a.view-link:hover {
+  color: var(--ferrari-red-dark);
+}
+
+.expand-row-btn {
+  color: #475569;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 1rem;
+  margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.approve-leave-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #f1f5f9;
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.approve-action-btn {
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.approve-action-btn:hover {
+  background-color: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+/* Export button variants */
+.report-export-btn {
+  background: linear-gradient(135deg, #c41230, #9b0d24);
+  border-color: #c41230;
+  color: #fff;
+  gap: 6px;
+  display: inline-flex;
+  align-items: center;
+}
+.report-export-btn:hover {
+  background: linear-gradient(135deg, #a30e28, #7e0a1d);
+  border-color: #a30e28;
+  color: #fff;
+}
+.report-export-btn--excel {
+  background: linear-gradient(135deg, #217346, #185c38);
+  border-color: #217346;
+}
+.report-export-btn--excel:hover {
+  background: linear-gradient(135deg, #185c38, #104026);
+  border-color: #185c38;
+}
+.report-export-btn--csv {
+  background: linear-gradient(135deg, #0369a1, #025585);
+  border-color: #0369a1;
+}
+.report-export-btn--csv:hover {
+  background: linear-gradient(135deg, #025585, #013d62);
+  border-color: #025585;
+}
+
+.batch-remark-label {
+  font-weight: 700;
+  color: #475569;
+  font-size: 0.85rem;
+  margin-left: 10px;
+}
+
+.approve-leave-pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #475569;
+  padding: 10px 0;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.pagination-select {
+  display: inline-block;
+  width: auto;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  margin: 0 5px;
+  height: auto;
+}
+
+.pagination-center {
+  display: flex;
+  gap: 15px;
+}
+
+.pagination-link {
+  color: var(--ferrari-red);
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.pagination-link:hover:not(.disabled) {
+  color: var(--ferrari-red-dark);
+  text-decoration: underline;
+}
+
+.pagination-link.disabled {
+  color: #94a3b8;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Expanded Detail Row Styling */
+.expanded-detail-row {
+  background-color: #f8fafc !important;
+}
+
+.expanded-detail-container {
+  padding: 15px 30px;
+  color: #334155;
+  font-size: 0.85rem;
+  border-left: 4px solid var(--ferrari-red);
+  white-space: normal !important;
+}
+
+/* Report Dashboard Section Styles */
+.report-results-section {
+  border-top: 1px solid #cbd5e1;
+  padding-top: 1.5rem;
+  margin-top: 1rem;
+}
+
+.report-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.report-kpi-card {
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.report-kpi-card .kpi-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.report-kpi-card .kpi-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.report-distribution-block,
+.report-table-block {
+  margin-bottom: 1.75rem;
+}
+
+.report-distribution-block h3,
+.report-table-block h3 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.report-distribution-bars {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.distribution-bar-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 15px;
+}
+
+.distribution-bar-row:last-child {
+  margin-bottom: 0;
+}
+
+.distribution-bar-label {
+  width: 160px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.distribution-bar-track {
+  flex-grow: 1;
+  background-color: #f1f5f9;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.distribution-bar-fill {
+  background: linear-gradient(90deg, var(--ferrari-yellow), var(--ferrari-red));
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+.distribution-bar-val {
+  width: 45px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.report-actions-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+/* Print CSS Styles specifically for Report Generation */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  #main-content-body,
+  #report-results-container,
+  #report-results-container *,
+  #travel-report-results-container,
+  #travel-report-results-container * {
+    visibility: visible;
+  }
+
+  #report-results-container,
+  #travel-report-results-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: #ffffff !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .report-actions-toolbar,
+  .approve-leave-filters,
+  .sidebar,
+  .main-header {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  .report-print-header {
+    display: block !important;
+    visibility: visible !important;
+    margin-bottom: 20px;
+  }
+
+  .report-kpi-card {
+    border: 1px solid #000000 !important;
+    background-color: #ffffff !important;
+  }
+  
+  .approve-leave-table th {
+    background-color: #e2e8f0 !important;
+    border: 1.5px solid #000000 !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .approve-leave-table td {
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+  }
+
+  .distribution-bar-fill {
+    background-color: #000000 !important;
+    border: 1px solid #000000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
