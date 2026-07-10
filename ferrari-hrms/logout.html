@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ital Auto HRMS - Signing Out</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --ferrari-red: #E00000;
+    }
+
+    body {
+      background: radial-gradient(circle at 80% 20%, #440003 0%, #150002 60%, #050001 100%);
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+
+    /* Full-screen wrapper */
+    .logout-container-page {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* Floating animated rings */
+    .floating-ring-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .ring-1 {
+      width: 600px; height: 600px;
+      border: 35px solid rgba(224, 0, 0, 0.08);
+      border-top-color: rgba(224, 0, 0, 0.25);
+      border-bottom-color: rgba(255, 255, 255, 0.15);
+      left: -200px; top: 10%;
+      box-shadow: inset 0 0 50px rgba(224, 0, 0, 0.2), 0 0 80px rgba(224, 0, 0, 0.15);
+      animation: spin 35s linear infinite;
+    }
+
+    .ring-2 {
+      width: 700px; height: 700px;
+      border: 45px solid rgba(224, 0, 0, 0.05);
+      border-left-color: rgba(224, 0, 0, 0.2);
+      border-right-color: rgba(255, 255, 255, 0.1);
+      right: -250px; top: -10%;
+      box-shadow: inset 0 0 60px rgba(224, 0, 0, 0.15), 0 0 100px rgba(224, 0, 0, 0.1);
+      animation: spin-reverse 45s linear infinite;
+    }
+
+    .ring-3 {
+      width: 300px; height: 300px;
+      border: 20px solid rgba(224, 0, 0, 0.10);
+      border-bottom-color: rgba(224, 0, 0, 0.3);
+      left: 45%; bottom: 15%;
+      box-shadow: inset 0 0 30px rgba(224, 0, 0, 0.25), 0 0 50px rgba(224, 0, 0, 0.2);
+      animation: spin 20s linear infinite;
+    }
+
+    /* Glowing ambient lights */
+    .glow-light {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      opacity: 0.65;
+      z-index: 0;
+    }
+
+    .glow-1 {
+      width: 450px; height: 450px;
+      background: radial-gradient(circle, rgba(224, 0, 0, 0.35) 0%, rgba(224, 0, 0, 0) 70%);
+      left: 10%; top: 20%;
+    }
+
+    .glow-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+      right: 15%; bottom: 10%;
+    }
+
+    @keyframes spin {
+      0%   { transform: rotate(0deg) rotateX(15deg) rotateY(10deg); }
+      100% { transform: rotate(360deg) rotateX(15deg) rotateY(10deg); }
+    }
+
+    @keyframes spin-reverse {
+      0%   { transform: rotate(360deg) rotateX(-20deg) rotateY(15deg); }
+      100% { transform: rotate(0deg) rotateX(-20deg) rotateY(15deg); }
+    }
+
+    /* Glassmorphism card */
+    .logout-card {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 380px;
+      padding: 3rem 2.5rem;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(25px) saturate(160%);
+      -webkit-backdrop-filter: blur(25px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      text-align: center;
+    }
+
+    .spinner-icon {
+      font-size: 3rem;
+      color: #E00000;
+      margin-bottom: 1.5rem;
+      animation: spin-simple 1.5s linear infinite;
+      display: block;
+      filter: drop-shadow(0 0 12px rgba(224, 0, 0, 0.6));
+    }
+
+    @keyframes spin-simple {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .logout-card h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 0.5rem;
+    }
+
+    .logout-card p {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="logout-container-page">
+    <!-- Animated rings -->
+    <div class="floating-ring-container">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+    </div>
+
+    <!-- Glow orbs -->
+    <div class="glow-light glow-1"></div>
+    <div class="glow-light glow-2"></div>
+
+    <!-- Glassmorphism logout card -->
+    <div class="logout-card">
+      <i class="fa-solid fa-spinner spinner-icon"></i>
+      <h2>Signing Out</h2>
+      <p>Clearing secure session...<br>Please wait.</p>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
+
